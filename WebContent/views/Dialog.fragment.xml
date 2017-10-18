@@ -1,0 +1,34 @@
+<core:FragmentDefinition
+   xmlns="sap.m"
+   xmlns:core="sap.ui.core" >
+   <Dialog
+      id="DialogFrag"
+      title="Dialog">
+      <content>
+      </content>
+      <Button xmlns="sap.m"
+	id="id"
+	busy="false"
+	busyIndicatorDelay="1000"
+	visible="true"
+	fieldGroupIds=""
+	text=""
+	type="Default"
+	width=""
+	enabled="true"
+	icon=""
+	iconFirst="true"
+	activeIcon=""
+	iconDensityAware="true"
+	textDirection="Inherit"
+	ariaDescribedBy=""
+	ariaLabelledBy=""
+	validateFieldGroup=""
+	tap=""
+	press="">
+		<tooltip></tooltip> <!-- sap.ui.core.TooltipBase -->
+		<dependents></dependents> <!-- sap.ui.core.Element, since 1.19 -->
+</Button>
+
+   </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+		xmlns:l="sap.ui.layout"
+		xmlns:core="sap.ui.core"
+		xmlns="sap.m">
+	<l:VerticalLayout
+			id = "CreateFrag"
+			class="sapUiContentPadding"
+			width="100%">
+		<l:content>
+			<Label text="Tipo commessa:" labelFor="selectPerson"/>
+			<Select
+					id="selectPerson"
+					forceSelection="false"
+					change="handleChangeSelect"
+					width="100%"
+					items="{
+						path: '/commit'
+					}">
+				<core:Item key="{id}" text="{title}"/>
+			</Select>
+			<Label class="titleLabel" text="Titolo: " labelFor="inputTitle"/>
+			<Input id="inputTitle" change="handleCreateChangeForTitle" value="Titolo" required="true" valueStateText="Devi inserire il titolo"/>
+			<Label text="Data inizio: " labelFor="startDate"/>
+			<DateTimePicker
+					id="startDate"
+					displayFormat="short"
+					required="true"
+					change="handleCreateChange"/>
+			<Label text="Data fine: " labelFor="endDate"/>
+			<DateTimePicker
+					id="endDate"
+					displayFormat="short"
+					required="true"
+					change="handleCreateChange"/>
+			<Label text="Note" labelFor="inputInfo"/>
+			<Input id="moreInfo" change="handleCreateChangeForInfo" value="Note" required="true" valueStateText="Devi inserire le note"/>
+		</l:content>
+	</l:VerticalLayout>
+</core:FragmentDefinition>

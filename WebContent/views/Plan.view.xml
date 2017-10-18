@@ -1,0 +1,72 @@
+<core:View 
+	xmlns:core="sap.ui.core" 
+	controllerName="sap.ui.myPlan.views.Plan"
+	xmlns:unified="sap.ui.unified"
+	xmlns="sap.m">
+	<VBox class="sapUiSmallMargin">
+	<PlanningCalendar
+					class="PC"
+					id="PC1"
+					startDate="{path: '/startDate'}"
+					rows="{
+						path : '/users'
+					}"
+					appointmentsVisualization="Filled"
+					appointmentSelect="handleAppointmentSelect"
+					showEmptyIntervalHeaders="false"
+					intervalSelect="handleAppointmentAddWithContext"
+					singleSelection="true"
+					startDateChange="startDateChanged"
+					viewChange="viewTimeChange"
+					viewKey="view7days">
+				<toolbarContent>
+					<Title text="{i18n>ToolbarTitle}" titleStyle="H4"/>
+					<ToolbarSpacer/>
+					<Button id="addButton" icon="sap-icon://add" press="handleAppointmentCreate" tooltip="Add"/>
+				</toolbarContent>
+				<rows>
+					<PlanningCalendarRow
+							class="PCR"
+							id="CalendarRow"
+							icon="{img}"
+							title="{name}"
+							text="{name}"
+							appointments="{path : 'appointments', templateShareable: 'true'}"
+							intervalHeaders="{path: 'headers', templateShareable: 'true'}">
+						<appointments>
+							<unified:CalendarAppointment
+									commit = "{commit}"
+									startDate="{start}"
+									endDate="{end}"
+									icon="{img}"
+									title="{title}"
+									text="{info}"
+									type="{type}"
+									tentative="{tentative}">
+							</unified:CalendarAppointment>
+						</appointments>
+						<intervalHeaders>
+							<unified:CalendarAppointment
+									commit = "{commit}"
+									startDate="{start}"
+									endDate="{end}"
+									icon="{img}"
+									title="{title}"
+									type="{type}">
+							</unified:CalendarAppointment>
+						</intervalHeaders>
+					</PlanningCalendarRow>
+				</rows>
+				<views>
+					<PlanningCalendarView id="view3" key="view7days"
+						intervalType="Day" description="1 settimana" intervalsS="7" intervalsM="7"
+						intervalsL="7">
+					</PlanningCalendarView>
+					<PlanningCalendarView id="view1" key="view30days"
+						intervalType="Day" description="1 mese" intervalsS="31" intervalsM="31"
+						intervalsL="31">
+					</PlanningCalendarView>
+	            </views>
+			</PlanningCalendar>
+	</VBox>
+</core:View>
