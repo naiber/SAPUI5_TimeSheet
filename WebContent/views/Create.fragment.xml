@@ -7,7 +7,7 @@
 			class="sapUiContentPadding"
 			width="100%">
 		<l:content>
-			<Label text="Tipo commessa:" labelFor="selectPerson"/>
+			<Label text="Tipo commessa:" labelFor="selectPerson" required = "true"/>
 			<Select
 					id="selectPerson"
 					forceSelection="false"
@@ -32,7 +32,7 @@
 					displayFormat="short"
 					required="true"
 					change="handleCreateChange"/>
-			<Label text="Note" labelFor="inputInfo"/>
+			<Label text="Note: " labelFor="inputInfo" required="true"/>
 			<Input id="moreInfo" change="handleCreateChangeForInfo" value="Note" required="true" valueStateText="Devi inserire le note"/>
 		</l:content>
 	</l:VerticalLayout>

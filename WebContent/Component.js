@@ -32,8 +32,14 @@ sap.ui.core.UIComponent.extend("sap.ui.myPlan.Component", {
 					pattern : "Planning", // which appears in URL, while you navigate
 					name : "plan",     // Name that is used in navTo method
 					view : "Plan",   // this is the target view that you are navigating to
-					viewPath : "views",
+					viewPath : "views"
 					// path of the target view
+				},
+				{
+					pattern : "Login",
+					name : "login",
+					view : "Login",
+					viewPath : "views"
 				}
 //				{
 //					pattern : "master", // which appears in URL, while you navigate
