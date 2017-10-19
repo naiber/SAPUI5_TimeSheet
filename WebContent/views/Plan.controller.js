@@ -31,6 +31,7 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 //	})
 //	},
 	onInit: function () {
+		
 		var oModel = new sap.ui.model.json.JSONModel();
 		oModel.setData({
 			startDate: this.getMonday(new Date()),
@@ -44,6 +45,21 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 						}],
 			users : [{
 				name : "Mike",
+				img : "sap-icon://employee",
+				appointments : []
+			},
+			{
+				name : "Aldo",
+				img : "sap-icon://employee",
+				appointments : []
+			},
+			{
+				name : "Giovanni",
+				img : "sap-icon://employee",
+				appointments : []
+			},
+			{
+				name : "Giacomo",
 				img : "sap-icon://employee",
 				appointments : []
 			}
@@ -75,6 +91,11 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 				});
 		
 		this.getView().setModel(oModel);
+		
+		var oSorter = new sap.ui.model.json.JSONModel("./model/sorterModel.json");
+		this.getView().setModel(oSorter,"Sorter");
+		console.log("oSorter",this.getView().getModel("Sorter"))
+		
 	},
 	
 	onAfterRendering : function(){
@@ -412,6 +433,19 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 
 								oModel.setProperty(sPath, oPersonAppointments);
 								oModel.setProperty("/savedCommit",oSelect.getKey());
+								var newItem = {
+										name : sTitle,
+										code : oSelect.getText(),
+										projectName : sInfoResponse,
+										totalHours : ((oEndDate.getHours()-oStartDate.getHours())-1)
+								}
+								oSorterModel = that.getView().getModel("Sorter")
+								sorterPath = "/client";
+								oClientResume = oSorterModel.getProperty(sorterPath);
+								oClientResume.push(newItem);
+								console.log("oSorterModel dentro createDialog",that.getView().getModel("Sorter"))
+								oSorterModel.setProperty(sorterPath,oClientResume);
+								that.getView().getModel("Sorter").refresh(true)
 								that.oNewAppointmentDialog.close();
 							}else{
 								console.log("inserisci tutti i campi")
@@ -428,6 +462,7 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 			});
 
 			that.oNewAppointmentDialog.addStyleClass("sapUiContentPadding");
+			console.log("dopo addStyleClass")
 			this.getView().addDependent(that.oNewAppointmentDialog);
 
 		}

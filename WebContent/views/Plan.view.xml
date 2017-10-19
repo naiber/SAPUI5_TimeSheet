@@ -1,72 +1,87 @@
-<core:View 
-	xmlns:core="sap.ui.core" 
-	controllerName="sap.ui.myPlan.views.Plan"
-	xmlns:unified="sap.ui.unified"
-	xmlns="sap.m">
+<core:View xmlns:core="sap.ui.core" controllerName="sap.ui.myPlan.views.Plan"
+	xmlns:unified="sap.ui.unified" xmlns="sap.m">
 	<VBox class="sapUiSmallMargin">
-	<PlanningCalendar
-					class="PC"
-					id="PC1"
-					startDate="{path: '/startDate'}"
-					rows="{
-						path : '/users'
-					}"
-					appointmentsVisualization="Filled"
-					appointmentSelect="handleAppointmentSelect"
-					showEmptyIntervalHeaders="false"
-					intervalSelect="handleAppointmentAddWithContext"
-					singleSelection="true"
-					startDateChange="startDateChanged"
-					viewChange="viewTimeChange"
-					viewKey="view7days">
+		<ScrollContainer height="100%" width="100%"
+			horizontal="false" vertical="true" focusable="false">
+			<PlanningCalendar class="PC" id="PC1"
+				startDate="{path: '/startDate'}" rows="{
+							path : '/users'
+						}"
+				appointmentsVisualization="Filled" appointmentSelect="handleAppointmentSelect"
+				showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext"
+				singleSelection="true" startDateChange="startDateChanged"
+				viewChange="viewTimeChange" viewKey="view7days">
 				<toolbarContent>
-					<Title text="{i18n>ToolbarTitle}" titleStyle="H4"/>
-					<ToolbarSpacer/>
-					<Button id="addButton" icon="sap-icon://add" press="handleAppointmentCreate" tooltip="Add"/>
+					<Title text="{i18n>ToolbarTitle}" titleStyle="H4" />
+					<ToolbarSpacer />
+					<Button id="addButton" icon="sap-icon://add" press="handleAppointmentCreate"
+						tooltip="Add" />
 				</toolbarContent>
 				<rows>
-					<PlanningCalendarRow
-							class="PCR"
-							id="CalendarRow"
-							icon="{img}"
-							title="{name}"
-							text="{name}"
-							appointments="{path : 'appointments', templateShareable: 'true'}"
-							intervalHeaders="{path: 'headers', templateShareable: 'true'}">
+					<PlanningCalendarRow class="PCR" id="CalendarRow"
+						icon="{img}" title="{name}" text="{name}"
+						appointments="{path : 'appointments', templateShareable: 'true'}"
+						intervalHeaders="{path: 'headers', templateShareable: 'true'}">
 						<appointments>
-							<unified:CalendarAppointment
-									commit = "{commit}"
-									startDate="{start}"
-									endDate="{end}"
-									icon="{img}"
-									title="{title}"
-									text="{info}"
-									type="{type}"
-									tentative="{tentative}">
+							<unified:CalendarAppointment commit="{commit}"
+								startDate="{start}" endDate="{end}" icon="{img}" title="{title}"
+								text="{info}" type="{type}" tentative="{tentative}">
 							</unified:CalendarAppointment>
 						</appointments>
 						<intervalHeaders>
-							<unified:CalendarAppointment
-									commit = "{commit}"
-									startDate="{start}"
-									endDate="{end}"
-									icon="{img}"
-									title="{title}"
-									type="{type}">
+							<unified:CalendarAppointment commit="{commit}"
+								startDate="{start}" endDate="{end}" icon="{img}" title="{title}"
+								type="{type}">
 							</unified:CalendarAppointment>
 						</intervalHeaders>
 					</PlanningCalendarRow>
 				</rows>
 				<views>
 					<PlanningCalendarView id="view3" key="view7days"
-						intervalType="Day" description="1 settimana" intervalsS="7" intervalsM="7"
-						intervalsL="7">
+						intervalType="Day" description="1 settimana" intervalsS="7"
+						intervalsM="7" intervalsL="7">
 					</PlanningCalendarView>
 					<PlanningCalendarView id="view1" key="view30days"
-						intervalType="Day" description="1 mese" intervalsS="31" intervalsM="31"
-						intervalsL="31">
+						intervalType="Day" description="1 mese" intervalsS="31"
+						intervalsM="31" intervalsL="31">
 					</PlanningCalendarView>
-	            </views>
+				</views>
 			</PlanningCalendar>
+		</ScrollContainer>
+		<Table id="idTotalHours" inset="false"
+			items="{Sorter>/client}">
+			<headerToolbar>
+				<Toolbar>
+					<Title text="Ore Cumulative" level="H5" />
+				</Toolbar>
+			</headerToolbar>
+			<columns>
+				<Column width="12em">
+					<Text text="Titolo" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="Commessa" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+					<Text text="Note" />
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+					<Text text="Ore" />
+				</Column>
+				<Column hAlign="End">
+					<Text text="Ore totali" />
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{name}"/>
+						<Text text="{code}"/>
+						<Text text="{projectName}"/>
+						<Text text="{totalHours}"/>		
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
 	</VBox>
 </core:View>

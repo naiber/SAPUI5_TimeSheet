@@ -1,4 +1,24 @@
-sap.ui.controller("zui_plancal.Login", {
+sap.ui.controller("sap.ui.myPlan.views.Login", {
+	
+	getRouter : function () {
+		return sap.ui.core.UIComponent.getRouterFor(this);	
+	},
+	submitPressed : function(oEvent){
+		var user = this.getView().byId("userF").getValue();
+		var password = this.getView().byId("passF").getValue();
+		console.log("user-->",user,"\tpassword-->",password);
+		
+		if(user == "admin" && password == "admin"){
+			this.getRouter().navTo("plan")
+			console.log("ok!")
+			
+		}else{
+			console.log("wrong user and password")
+			return
+		}
+		
+		
+	}
 
 /**
 * Called when a controller is instantiated and its View controls (if available) are already created.

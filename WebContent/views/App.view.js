@@ -11,9 +11,9 @@ sap.ui.jsview("sap.ui.myPlan.views.App", {
 		
 		// create app
 		this.app = new sap.m.App("App");
-		
+		this.app.setHeight("")
 		// load the master page
-		var plan = sap.ui.xmlview("Plan", "sap.ui.myPlan.views.Plan");
+		var plan = sap.ui.xmlview("Login", "sap.ui.myPlan.views.Login");
 		plan.getController().nav = this.getController();
 		this.app.addPage(plan, true);
 		

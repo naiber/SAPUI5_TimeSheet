@@ -5,12 +5,18 @@ sap.ui.controller("sap.ui.myPlan.views.App", {
 	 * @param {string} pageId The id of the next page
 	 * @param {sap.ui.model.Context} context The data context to be applied to the next page (optional)
 	 */
+	
+	onInit : function(){
+		console.log("onInit di App.controller")
+		console.log(this.getView())
+	},
+	
 	to : function (pageId, context) {
 		
 		var app = this.getView().app;
 		
 		// load page on demand
-		var master = ("PC1" === pageId);
+		var master = ("Login" === pageId);
 		if (app.getPage(pageId, master) === null) {
 			var page = sap.ui.view({
 				id : pageId,

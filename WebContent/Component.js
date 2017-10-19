@@ -3,66 +3,43 @@ jQuery.sap.declare("sap.ui.myPlan.Component");
 sap.ui.core.UIComponent.extend("sap.ui.myPlan.Component", {
 	metadata : {
 		
-		rootView: 
+		"rootView": 
         {
-          viewName: "sap.ui.myPlan.views.Plan",
-          type: "XML",
-          id: "plan"
+          "viewName": "sap.ui.myPlan.views.Login",
+          "type": "XML",
+          "id": "Login"
         },
 		
-		routing : {
-			config : {
-				routerClass: "sap.m.routing.Router",
-				viewType : "XML",
-				viewPath : "sap.ui.myPlan.views",
-				controlId : "App",
-				controlAggregation: "App",
-				clearTarget : false,
+		"routing" : {
+			"config" : {
+				"routerClass": "sap.m.routing.Router",
+				"viewType" : "XML",
+				"viewPath" : "sap.ui.myPlan.views",
+				"controlId" : "App",
+				"controlAggregation": "pages"
 			},
-			routes : [
-//				{
-//					pattern : "", // which appears in URL, while you navigate
-//					name : "master",     // Name that is used in navTo method
-//					view : "Master",   // this is the target view that you are navigating to
-//					viewPath : "views",
-//					// path of the target view
-//						
-//				},
+			"routes" : [
 				{
-					pattern : "Planning", // which appears in URL, while you navigate
-					name : "plan",     // Name that is used in navTo method
-					view : "Plan",   // this is the target view that you are navigating to
-					viewPath : "views"
-					// path of the target view
+					"pattern" : "Planning", 
+					"name" : "plan",
+					"view" : "Plan",
+					"target" : "plan"
 				},
 				{
-					pattern : "Login",
-					name : "login",
-					view : "Login",
-					viewPath : "views"
+					"pattern" : "",
+					"name" : "login",
+					"view" : "Login",
+					"target" : "login"
 				}
-//				{
-//					pattern : "master", // which appears in URL, while you navigate
-//					name : "master",     // Name that is used in navTo method
-//					view : "MasterPage",   // this is the target view that you are navigating to
-//					viewPath : "view", // path of the target view
-//					targetAggregation : "pages" // this defines whether the target view is a [pages/content/masterpages/detailpages]
-//				},
-//				{
-//					pattern : "detail", // which appears in URL, while you navigate
-//					name : "detail",     // Name that is used in navTo method
-//					view : "DetailPage",   // this is the target view that you are navigating to
-//					viewPath : "view", // path of the target view
-//					targetAggregation : "pages" // this defines whether the target view is a [pages/content/masterpages/detailpages]
-//				}
-			]
-		},
-		resources : {
-			css : [
-				{
-					uri : "css/myStle.css"
+			],
+			"targets" : {
+				"plan" : {
+					"viewName" : "Plan"
+				},
+				"login": {
+					"viewName" : "Login"
 				}
-			]
+			}
 		}
 	},
 	
