@@ -95,9 +95,9 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 		
 		this.getView().setModel(oModel);
 		
-		var oSorter = new sap.ui.model.json.JSONModel("./model/sorterModel.json");
-		this.getView().setModel(oSorter,"Sorter");
-		console.log("oSorter",this.getView().getModel("Sorter"))
+//		var oSorter = new sap.ui.model.json.JSONModel("./model/sorterModel.json");
+//		this.getView().setModel(oSorter,"Sorter");
+//		console.log("oSorter",this.getView().getModel("Sorter"))
 		
 	},
 	
@@ -193,7 +193,7 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 	handleCancelButton: function (oEvent) {
 //		console.log("dentro handleCancelButton")
 		var sAppointmentPath = this._oDetailsPopover.getBindingContext().sPath;
-		console.log("sAppointmentPath",sAppointmentPath)
+//		console.log("sAppointmentPath",sAppointmentPath)
 //		console.log("oEvent di handleCancelButton",oEvent.getSource())
 		var tempUsers= this._oDetailsPopover.getModel().getProperty(sAppointmentPath.substring(0,sAppointmentPath.length-1))
 //		console.log("temp",temp)
@@ -205,21 +205,34 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 		
 		var tempClient = this._oDetailsPopover.getModel().getProperty("/client");
 		
+		var hoursDeleted = 0;
+		
 		for (var i=0;i<tempClient.length;i++){
 			if(tempClient[i].id == itemId){
+				hoursDeleted = tempClient[i].totalHours
 				tempClient.splice(i,1)
 				
 			}
 		}
-//		console.log("dopo del delete",temp)
-//		this.getView().getModel().setData("/users/"+indexItemSelected+"/appointments/",tempUsers)
+		
+//		console.log("hoursDeleted",hoursDeleted)
+		
+		var tempTotHours = this._oDetailsPopover.getModel().getProperty("/totHoursClient");
+		
+//		console.log("tempTotHours",tempTotHours)
+		
+		tempTotHours = tempTotHours-hoursDeleted;
+		
+//		console.log("tempTotHours - hoursDeleted",tempTotHours)
+		this._oDetailsPopover.getModel().setProperty("/totHoursClient",tempTotHours)
+//		console.log("dopo del delete",this._oDetailsPopover.getModel().getProperty("/totHoursClient"))
+				
 		if(this._oDetailsPopover.getModel().getProperty(sAppointmentPath) == "" || this._oDetailsPopover.getModel().getProperty(sAppointmentPath) == null){
 			console.log("elemento cancellato")
 		}else{
 			console.log("elemento non cancellato")
 		}
 		this.getView().getModel().refresh(true)
-//		this.getView().getModel().refresh(true)
 //		console.log(this._oDetailsPopover.getModel().getProperty(sAppointmentPath))
 		this._oDetailsPopover.close();
 	},
@@ -251,6 +264,7 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 	handleAppointmentAddWithContext: function (oEvent) {
 		console.log("dentro handleAppointmentAddWithContext")
 		console.log("oEvent",oEvent.getSource())
+		console.log("this.getView().getModel()",this.getView().getModel().getProperty("/totHoursClient"))
 		var oFrag =  sap.ui.core.Fragment,
 		currentRow,
 		sPersonName,
