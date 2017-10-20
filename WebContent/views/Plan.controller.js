@@ -86,7 +86,10 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 						tentative : false
 					}
 					],
-			savedCommit : ""
+			savedCommit : "",
+			client : [],
+			totHoursClient : 0,
+			sorter : ""
 					
 				});
 		
@@ -188,16 +191,28 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 	},
 
 	handleCancelButton: function (oEvent) {
-		console.log("dentro handleCancelButton")
+//		console.log("dentro handleCancelButton")
 		var sAppointmentPath = this._oDetailsPopover.getBindingContext().sPath;
 		console.log("sAppointmentPath",sAppointmentPath)
-		var temp= this._oDetailsPopover.getModel().getProperty("/users/0/appointments/")
-		console.log("temp",temp)
-		var index = sAppointmentPath.substring(sAppointmentPath.length-1,sAppointmentPath.length)
-		console.log("sAppointmentPath selected index",index)
-		temp.splice(index,1)
-		console.log("dopo del delete",temp)
-		this.getView().getModel().setData("/users/0/appointments/",temp)
+//		console.log("oEvent di handleCancelButton",oEvent.getSource())
+		var tempUsers= this._oDetailsPopover.getModel().getProperty(sAppointmentPath.substring(0,sAppointmentPath.length-1))
+//		console.log("temp",temp)
+		var itemId = this._oDetailsPopover.getModel().getProperty(sAppointmentPath).id
+//		console.log("itemId",itemId)
+		var indexItemSelected = sAppointmentPath.substring(sAppointmentPath.length-1,sAppointmentPath.length)
+//		console.log("sAppointmentPath selected index",index)
+		tempUsers.splice(indexItemSelected,1)
+		
+		var tempClient = this._oDetailsPopover.getModel().getProperty("/client");
+		
+		for (var i=0;i<tempClient.length;i++){
+			if(tempClient[i].id == itemId){
+				tempClient.splice(i,1)
+				
+			}
+		}
+//		console.log("dopo del delete",temp)
+//		this.getView().getModel().setData("/users/"+indexItemSelected+"/appointments/",tempUsers)
 		if(this._oDetailsPopover.getModel().getProperty(sAppointmentPath) == "" || this._oDetailsPopover.getModel().getProperty(sAppointmentPath) == null){
 			console.log("elemento cancellato")
 		}else{
@@ -216,7 +231,7 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 		oDateTimePickerEnd,
 		oBeginButton;
 
-		this._createDialog();
+		this._createDialog(oEvent);
 
 		sap.ui.core.Fragment.byId("myFrag", "selectPerson").setSelectedItem(sap.ui.core.Fragment.byId("myFrag", "selectPerson").getItems()[0]);
 
@@ -235,6 +250,7 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 
 	handleAppointmentAddWithContext: function (oEvent) {
 		console.log("dentro handleAppointmentAddWithContext")
+		console.log("oEvent",oEvent.getSource())
 		var oFrag =  sap.ui.core.Fragment,
 		currentRow,
 		sPersonName,
@@ -248,13 +264,15 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 		oDateTimePickerEnd,
 		oBeginButton;
 
-		this._createDialog();
+		this._createDialog(oEvent);
 
 		currentRow = oEvent.getParameter("row");
 		if(!currentRow){
 			console.log("currentRow is empty")
 			return
 		}
+		
+		
 		
 		console.log("items-->",sap.ui.core.Fragment.byId("myFrag","selectPerson"))
 		sPersonName = currentRow.getTitle();
@@ -263,7 +281,7 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 		oSelectedItem = oSelect.getItems().filter(function(oItem) { return oItem.getText() === sPersonName; })[0];
 		console.log("oSelectedItem",oSelectedItem)
 		oSelect.setSelectedItem(oSelectedItem);
-		
+		this._validateCommitSelect();
 
 //		oSelectedIntervalStart = oEvent.getParameter("startDate");
 		oSelectedIntervalStart = this.startTimeWork(oEvent.getParameter("startDate"));
@@ -284,11 +302,24 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 
 		oDateTimePickerStart.setValueState("None");
 		oDateTimePickerEnd.setValueState("None");
-
+		
+		
+		
 		this.updateButtonEnabledState(oDateTimePickerStart, oDateTimePickerEnd, oBeginButton);
 		this.oNewAppointmentDialog.open();
 	},
 
+	_validateCommitSelect : function (){
+		if(sap.ui.core.Fragment.byId("myFrag","selectPerson").getSelectedItem()){
+			sap.ui.core.Fragment.byId("myFrag","selectPerson").setValueState("None");
+		}
+		else{
+			console.log("oSelect vuoto")
+			sap.ui.core.Fragment.byId("myFrag","selectPerson").setValueState("Error")
+			sap.ui.core.Fragment.byId("myFrag","selectPerson").setValueStateText("Inserisci un campo")
+		}
+		
+	},
 	_validateDateTimePicker: function (sValue, oDateTimePicker) {
 		console.log("dentro _validateDateTimePicker")
 		if (sValue === "") {
@@ -375,9 +406,28 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 		this._validateDateTimePicker(oEvent.getParameter("value"), oEvent.oSource);
 		this.updateButtonEnabledState(oDateTimePickerStart, oDateTimePickerEnd, oBeginButton);
 	},
-
-	_createDialog: function () {
+	
+	getRandomId : function () {
+		  min = Math.ceil(1);
+		  max = Math.floor(1000);
+		  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+	},
+	
+	getRowId : function(oEvent){
+		currentRow = oEvent.getParameter("row");
+		if(!currentRow){
+			console.log("currentRow is empty")
+			return
+		}
+		
+		var idRow = currentRow.getId().substring(currentRow.getId().length-1,currentRow.getId().length)
+		
+		return idRow;
+	},
+	
+	_createDialog: function (oEvent) {
 		console.log("dentro _createDialog")
+		console.log("oEvent.getSource()",oEvent.getSource())
 		var fragmentId = this.getView().createId("myFrag");
 		
 		var oFrag = sap.ui.core.Fragment,
@@ -391,8 +441,10 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 		oModel,
 		sPath,
 		oPersonAppointments;
+		that.sId = that.getRowId(oEvent);
 		
-
+		console.log("sId-->",that.sId)
+		
 		if (!that.oNewAppointmentDialog) {
 
 			that.oNewAppointmentDialog = new sap.m.Dialog({
@@ -405,9 +457,17 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 						enabled: false,
 						press: function () {
 							console.log("dentro Create function in beginButton")
-							
+
+//							if(sap.ui.core.Fragment.byId("myFrag","selectPerson").getSelectedItem()){
+//								oSelect = sap.ui.core.Fragment.byId("myFrag","selectPerson").getSelectedItem();
+//								sap.ui.core.Fragment.byId("myFrag","selectPerson").setValueState("None");
+//							}
+//							else{
+//								console.log("oSelect vuoto")
+//								sap.ui.core.Fragment.byId("myFrag","selectPerson").setValueState("Error")
+//								return;
+//							}
 							oSelect = sap.ui.core.Fragment.byId("myFrag","selectPerson").getSelectedItem();
-							console.log("oSelect",oSelect)
 							oStartDate = sap.ui.core.Fragment.byId("myFrag", "startDate").getDateValue();
 							oEndDate = sap.ui.core.Fragment.byId("myFrag", "endDate").getDateValue();
 							sTitle = sap.ui.core.Fragment.byId("myFrag", "inputTitle").getValue();
@@ -416,36 +476,45 @@ sap.ui.controller("sap.ui.myPlan.views.Plan", {
 							if (sap.ui.core.Fragment.byId("myFrag", "startDate").getValueState() !== "Error"
 								&& sap.ui.core.Fragment.byId("myFrag", "endDate").getValueState() !== "Error"
 									&& sTitle !== "" && sInfoResponse !== "") {
-
+								var totHours = (oEndDate.getHours()-oStartDate.getHours())-1
+								var id = that.getRandomId();
+								
 								oNewAppointment = {
+										id : id,
 										commit : oSelect.getText(),
 										start: oStartDate,
 										end: oEndDate,
 										title: sTitle,
 										info: sInfoResponse
 								};
-								
 								oModel = that.getView().getModel();
-								sPath = "/users/0/appointments";
+								sPath = "/users/"+that.sId+"/appointments";
+								console.log("sPath",sPath)
 								oPersonAppointments = oModel.getProperty(sPath);
 
 								oPersonAppointments.push(oNewAppointment);
-
+								
 								oModel.setProperty(sPath, oPersonAppointments);
 								oModel.setProperty("/savedCommit",oSelect.getKey());
 								var newItem = {
+										id : id,
 										name : sTitle,
 										code : oSelect.getText(),
 										projectName : sInfoResponse,
-										totalHours : ((oEndDate.getHours()-oStartDate.getHours())-1)
+										totalHours : totHours
 								}
-								oSorterModel = that.getView().getModel("Sorter")
+								
 								sorterPath = "/client";
-								oClientResume = oSorterModel.getProperty(sorterPath);
+								var totHoursPath = "/totHoursClient"
+								var totHoursTo = oModel.getProperty(totHoursPath)+totHours;
+								oModel.setProperty(totHoursPath,totHoursTo);
+//								
+								oClientResume = oModel.getProperty(sorterPath);
 								oClientResume.push(newItem);
-								console.log("oSorterModel dentro createDialog",that.getView().getModel("Sorter"))
-								oSorterModel.setProperty(sorterPath,oClientResume);
-								that.getView().getModel("Sorter").refresh(true)
+								console.log("oSorterModel dentro createDialog",that.getView().getModel().getProperty(sorterPath))
+								oModel.setProperty(sorterPath,oClientResume);
+								console.log("model",oModel)
+								that.getView().getModel().refresh(true)
 								that.oNewAppointmentDialog.close();
 							}else{
 								console.log("inserisci tutti i campi")

@@ -11,7 +11,7 @@
 			<Select
 					id="selectPerson"
 					forceSelection="false"
-					change="handleChangeSelect"
+					change="_validateCommitSelect"
 					width="100%"
 					items="{
 						path: '/commit'

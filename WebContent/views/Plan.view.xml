@@ -1,8 +1,8 @@
 <core:View xmlns:core="sap.ui.core" controllerName="sap.ui.myPlan.views.Plan"
 	xmlns:unified="sap.ui.unified" xmlns="sap.m">
-	<VBox class="sapUiSmallMargin">
-		<ScrollContainer height="100%" width="100%"
+	<ScrollContainer height="100%" width="100%"
 			horizontal="false" vertical="true" focusable="false">
+	<VBox class="sapUiSmallMargin">
 			<PlanningCalendar class="PC" id="PC1"
 				startDate="{path: '/startDate'}" rows="{
 							path : '/users'
@@ -47,12 +47,13 @@
 					</PlanningCalendarView>
 				</views>
 			</PlanningCalendar>
-		</ScrollContainer>
-		<Table id="idTotalHours" inset="false"
-			items="{Sorter>/client}">
+			<Table id="idTotalHours" inset="false"
+			items="{
+						path : '/client'
+					}">
 			<headerToolbar>
 				<Toolbar>
-					<Title text="Ore Cumulative" level="H5" />
+					<Title text="Ore Cumulative" level="H6" />
 				</Toolbar>
 			</headerToolbar>
 			<columns>
@@ -62,14 +63,11 @@
 				<Column minScreenWidth="Tablet" demandPopin="true">
 					<Text text="Commessa" />
 				</Column>
-				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+				<Column minScreenWidth="Tablet" demandPopin="true" >
 					<Text text="Note" />
 				</Column>
-				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+				<Column minScreenWidth="Tablet" demandPopin="true" >
 					<Text text="Ore" />
-				</Column>
-				<Column hAlign="End">
-					<Text text="Ore totali" />
 				</Column>
 			</columns>
 			<items>
@@ -83,5 +81,19 @@
 				</ColumnListItem>
 			</items>
 		</Table>
+		<Panel
+		height = "100%">
+		<FlexBox
+				direction= "Column"
+				height="100%"
+				alignItems="Right"
+				justifyContent="Center"
+				fitContainer="true">
+				<items>
+					<Text level="H5" text="Ore totali {path : '/totHoursClient'},00"></Text>
+				</items>
+		</FlexBox>
+		</Panel>
 	</VBox>
+	</ScrollContainer>		
 </core:View>
