@@ -30,7 +30,7 @@
 						  columnsM="1"
 						  singleContainerFullSize="false">
 				<f:content>
-					<Label text="Tipo commessa:" labelFor="selectCommit"/>
+					<Label text="Tipo commessa" labelFor="selectCommit"/>
 					<Select
 						id="selectCommit"
 						forceSelection="false"
@@ -41,11 +41,11 @@
 						}">
 						<core:Item key="{id}" text="{title}"/>
 					</Select>
-					<Label text="Data inizio "/>
+					<Label text="Data inizio: "/>
 					<DateTimePicker id="startDate" change="handleDetailsChange"/>
-					<Label text="Data fine "/>
+					<Label text="Data fine: "/>
 					<DateTimePicker id="endDate" change="handleDetailsChange"/>
-					<Label text="Note"/>
+					<Label text="Note: "/>
 					<Input id="moreInfo"/>
 				</f:content>
 			</f:SimpleForm>
